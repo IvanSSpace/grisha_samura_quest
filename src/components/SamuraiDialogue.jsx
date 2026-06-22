@@ -80,7 +80,7 @@ export default function SamuraiDialogue({
           <div className="mb-2 font-body text-xs italic text-fog">{samurai.title}</div>
           {/* Призрак полной строки резервирует высоту — текст не скачет при печати */}
           <div
-            className={`relative ${compact ? 'h-[13rem]' : 'h-[12rem]'} overflow-y-auto cursor-pointer select-none font-body text-lg leading-relaxed`}
+            className={`relative h-[18rem] cursor-pointer select-none font-body text-lg leading-relaxed`}
             onClick={advance}
           >
             <p className="invisible" aria-hidden="true">
