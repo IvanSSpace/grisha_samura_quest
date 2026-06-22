@@ -1,0 +1,57 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: dark;
+}
+
+html,
+body,
+#root {
+  min-height: 100%;
+}
+
+body {
+  margin: 0;
+  background-color: #0a0907;
+  background-image:
+    radial-gradient(1200px 600px at 50% -10%, rgba(201, 162, 39, 0.08), transparent 60%),
+    radial-gradient(900px 500px at 50% 120%, rgba(122, 31, 31, 0.12), transparent 60%),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160' viewBox='0 0 160 160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");
+  color: #cbb994;
+  font-family: 'EB Garamond', Georgia, serif;
+}
+
+/* Прокрутка в стиле тёмного фэнтези */
+::-webkit-scrollbar {
+  width: 10px;
+}
+::-webkit-scrollbar-track {
+  background: #0a0907;
+}
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(#3a2f17, #1a1610);
+  border-radius: 8px;
+}
+
+@layer components {
+  .frame {
+    @apply relative rounded-md border border-ember/30 bg-ash/80 backdrop-blur-sm;
+    box-shadow: inset 0 0 40px rgba(0, 0, 0, 0.6), 0 8px 30px rgba(0, 0, 0, 0.5);
+  }
+  .frame::before {
+    content: '';
+    @apply pointer-events-none absolute inset-1 rounded-sm border border-ember/10;
+  }
+  .gold-text {
+    background: linear-gradient(180deg, #f3e4b0, #c9a227 55%, #8a6a16);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  .divider {
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(201, 162, 39, 0.5), transparent);
+  }
+}
