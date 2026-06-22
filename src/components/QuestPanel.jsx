@@ -57,28 +57,12 @@ export default function QuestPanel({ quest, done, briefed, revealHeld, onBriefed
               src={quest.image}
               alt={quest.name}
               kind={isArmor ? 'комплект' : 'катана'}
-              className={`h-full w-full object-contain transition-all duration-[1600ms] ease-out ${
+              className={`relative h-full w-full object-contain transition-all duration-[1600ms] ease-out ${
                 revealed
-                  ? 'scale-100 blur-0 brightness-100 grayscale-0'
-                  : 'scale-105 blur-[5px] brightness-[0.18] grayscale'
+                  ? 'scale-100 brightness-100 contrast-100'
+                  : 'scale-100 brightness-0 contrast-200'
               }`}
             />
-            {/* Тёмная пелена поверх скрытого клинка */}
-            <div
-              className={`pointer-events-none absolute inset-0 bg-gradient-to-t from-black via-black/75 to-black/45 transition-opacity duration-[1600ms] ${
-                done ? 'opacity-0' : 'opacity-100'
-              }`}
-            />
-            {/* Печать на запечатанном клинке */}
-            {!done && (
-              <span className="pointer-events-none absolute inset-0 flex items-center justify-center font-title text-5xl text-ember/25">
-                封
-              </span>
-            )}
-            {/* Вспышка золотого света в момент проявления */}
-            {done && (
-              <span className="pointer-events-none absolute inset-0 animate-revealFlash rounded bg-[radial-gradient(circle,rgba(217,192,137,0.55),transparent_65%)]" />
-            )}
           </div>
           <div className="flex-1">
             <div className="flex items-center gap-2 font-title text-xs tracking-[0.3em] text-ember/80">
@@ -97,8 +81,9 @@ export default function QuestPanel({ quest, done, briefed, revealHeld, onBriefed
         </div>
       </header>
 
-      {/* Свитки со всей информацией */}
-      <>
+      {/* Свитки — только пока клинок не собран */}
+      {!done && (
+        <>
           <div className="grid gap-6 md:grid-cols-2">
             {/* Навык / части комплекта */}
             <section className="frame p-5">
@@ -169,6 +154,7 @@ export default function QuestPanel({ quest, done, briefed, revealHeld, onBriefed
             </div>
           )}
         </>
+      )}
     </article>
   )
 }

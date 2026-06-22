@@ -40,12 +40,19 @@ export default {
           '35%': { opacity: 1 },
           '100%': { opacity: 0, transform: 'scale(1.6)' },
         },
+        // Всплывающее окно «клинок обретён».
+        popin: {
+          '0%': { opacity: 0, transform: 'scale(0.8) translateY(20px)' },
+          '60%': { opacity: 1, transform: 'scale(1.03) translateY(0)' },
+          '100%': { opacity: 1, transform: 'scale(1) translateY(0)' },
+        },
       },
       animation: {
         fadein: 'fadein 0.7s ease-out both',
         flicker: 'flicker 4s ease-in-out infinite',
         sheen: 'sheen 3.5s linear infinite',
         revealFlash: 'revealFlash 1.6s ease-out both',
+        popin: 'popin 0.5s cubic-bezier(0.22, 1, 0.36, 1) both',
       },
     },
   },

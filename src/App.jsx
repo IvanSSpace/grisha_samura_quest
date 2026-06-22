@@ -5,6 +5,7 @@ import ProgressTrail from './components/ProgressTrail'
 import QuestPanel from './components/QuestPanel'
 import SamuraiDialogue from './components/SamuraiDialogue'
 import ConfirmModal from './components/ConfirmModal'
+import CollectReveal from './components/CollectReveal'
 import FinalReward from './components/FinalReward'
 
 const INTRO_KEY = 'kojiro-intro-seen-v1'
@@ -15,6 +16,7 @@ export default function App() {
 
   const [showIntro, setShowIntro] = useState(() => !localStorage.getItem(INTRO_KEY))
   const [modalOpen, setModalOpen] = useState(false)
+  const [revealQuest, setRevealQuest] = useState(null) // quest для всплывающего окна проявления
   const [justCollected, setJustCollected] = useState(null) // quest, чью реакцию показываем
   const [selected, setSelected] = useState(null) // ручной выбор в тропе
 
@@ -57,7 +59,7 @@ export default function App() {
     const q = quests[activeIndex]
     setModalOpen(false)
     markCollected(q.id)
-    setJustCollected(q) // показать реакцию мастера
+    setRevealQuest(q) // сначала всплывающее окно проявления клинка
   }
 
   function dismissIntro() {
@@ -73,7 +75,7 @@ export default function App() {
     !allDone && viewedQuest && !(viewedDone || isBriefed(viewedQuest.id))
 
   // Блокируем прокрутку фона, когда открыт любой модальный оверлей
-  const anyOverlay = showIntro || !!justCollected || modalOpen || briefingOpen
+  const anyOverlay = showIntro || !!revealQuest || !!justCollected || modalOpen || briefingOpen
   useEffect(() => {
     document.body.style.overflow = anyOverlay ? 'hidden' : ''
     return () => {
@@ -132,6 +134,7 @@ export default function App() {
               quest={viewedQuest}
               done={viewedDone}
               briefed={viewedDone || isBriefed(viewedQuest.id)}
+              revealHeld={revealQuest?.id === viewedQuest.id || justCollected?.id === viewedQuest.id}
               onBriefed={() => markBriefed(viewedQuest.id)}
               onCollectClick={() => setModalOpen(true)}
             />
@@ -150,6 +153,18 @@ export default function App() {
             <SamuraiDialogue lines={samurai.intro} onDone={dismissIntro} />
           </div>
         </div>
+      )}
+
+      {/* Всплывающее окно: клинок проявляется из тьмы */}
+      {revealQuest && (
+        <CollectReveal
+          quest={revealQuest}
+          onDone={() => {
+            const q = revealQuest
+            setRevealQuest(null)
+            setJustCollected(q) // затем реакция мастера
+          }}
+        />
       )}
 
       {/* Реакция мастера на собранный клинок */}

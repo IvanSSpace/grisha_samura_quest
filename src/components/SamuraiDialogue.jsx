@@ -42,7 +42,6 @@ export default function SamuraiDialogue({
   const last = index >= lines.length - 1
   const full = lines[index] ?? ''
   const typing = shown.length < full.length
-  const mapVisible = mapImage && index >= mapFromIndex
 
   // Мгновенно дописать строку: ОБЯЗАТЕЛЬНО гасим таймер, иначе он снова
   // перезапишет текст куском и анимация «дёрнется».
@@ -98,8 +97,8 @@ export default function SamuraiDialogue({
           {/* Призрак полной строки резервирует высоту — текст не скачет при печати */}
           <div
             className={`relative ${
-              mapVisible ? 'min-h-[5rem]' : 'h-[18rem]'
-            } select-none font-body text-lg leading-relaxed ${
+              mapImage ? 'h-[11rem]' : 'h-[14rem]'
+            } overflow-hidden select-none font-body text-lg leading-relaxed ${
               typing ? 'cursor-pointer' : 'cursor-default'
             }`}
             onClick={() => {
@@ -118,17 +117,22 @@ export default function SamuraiDialogue({
         </div>
       </div>
 
-      {mapImage && index >= mapFromIndex && (
-        <div className="mt-4 animate-fadein">
-          <div className="mb-1 font-title text-xs tracking-widest text-ember/80">
-            ◆ МЕТКА НА КАРТЕ
-          </div>
-          <ItemImage
-            src={mapImage}
-            alt={mapAlt || 'Карта'}
-            kind="метка на карте"
-            className="h-56 w-full rounded border border-ember/20 object-cover md:h-72"
-          />
+      {/* Слот под карту зарезервирован всегда — окно не меняет размер */}
+      {mapImage && (
+        <div className="mt-4 h-[15rem]">
+          {index >= mapFromIndex && (
+            <div className="flex h-full flex-col animate-fadein">
+              <div className="mb-1 font-title text-xs tracking-widest text-ember/80">
+                ◆ МЕТКА НА КАРТЕ
+              </div>
+              <ItemImage
+                src={mapImage}
+                alt={mapAlt || 'Карта'}
+                kind="метка на карте"
+                className="min-h-0 flex-1 w-full rounded border border-ember/20 object-cover"
+              />
+            </div>
+          )}
         </div>
       )}
 
