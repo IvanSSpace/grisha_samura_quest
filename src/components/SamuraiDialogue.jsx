@@ -16,6 +16,7 @@ export default function SamuraiDialogue({
   const [index, setIndex] = useState(0)
   const [shown, setShown] = useState('')
   const lineRef = useRef(lines)
+  const intervalRef = useRef(null)
 
   // Сброс при смене набора реплик
   useEffect(() => {
@@ -29,21 +30,29 @@ export default function SamuraiDialogue({
     const full = lines[index] ?? ''
     setShown('')
     let i = 0
-    const t = setInterval(() => {
+    clearInterval(intervalRef.current)
+    intervalRef.current = setInterval(() => {
       i += 1
       setShown(full.slice(0, i))
-      if (i >= full.length) clearInterval(t)
+      if (i >= full.length) clearInterval(intervalRef.current)
     }, 18)
-    return () => clearInterval(t)
+    return () => clearInterval(intervalRef.current)
   }, [index, lines])
 
   const last = index >= lines.length - 1
   const full = lines[index] ?? ''
   const typing = shown.length < full.length
 
+  // Мгновенно дописать строку: ОБЯЗАТЕЛЬНО гасим таймер, иначе он снова
+  // перезапишет текст куском и анимация «дёрнется».
+  function completeLine() {
+    clearInterval(intervalRef.current)
+    setShown(full)
+  }
+
   function advance() {
     if (typing) {
-      setShown(full) // мгновенно дописать строку
+      completeLine()
       return
     }
     if (last) {
@@ -84,7 +93,7 @@ export default function SamuraiDialogue({
               typing ? 'cursor-pointer' : 'cursor-default'
             }`}
             onClick={() => {
-              if (typing) setShown(full) // клик по тексту только дописывает строку
+              if (typing) completeLine() // клик по тексту только дописывает строку
             }}
           >
             <p className="invisible" aria-hidden="true">
