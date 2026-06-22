@@ -80,8 +80,12 @@ export default function SamuraiDialogue({
           <div className="mb-2 font-body text-xs italic text-fog">{samurai.title}</div>
           {/* Призрак полной строки резервирует высоту — текст не скачет при печати */}
           <div
-            className={`relative h-[18rem] cursor-pointer select-none font-body text-lg leading-relaxed`}
-            onClick={advance}
+            className={`relative h-[18rem] select-none font-body text-lg leading-relaxed ${
+              typing ? 'cursor-pointer' : 'cursor-default'
+            }`}
+            onClick={() => {
+              if (typing) setShown(full) // клик по тексту только дописывает строку
+            }}
           >
             <p className="invisible" aria-hidden="true">
               {full}
