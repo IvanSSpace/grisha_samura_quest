@@ -33,12 +33,20 @@ export default function ProgressTrail({ quests, activeIndex, isCollected, onSele
                         : 'border-fog/40 text-fog'
                   }`}
                 >
-                  {done ? '✦' : locked ? '🔒' : i + 1}
+                  {done ? (
+                    '✦'
+                  ) : locked ? (
+                    <svg viewBox="0 0 24 24" className="h-3.5 w-3.5" fill="currentColor" aria-hidden="true">
+                      <path d="M12 2a5 5 0 0 0-5 5v3H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8a2 2 0 0 0-2-2h-1V7a5 5 0 0 0-5-5Zm3 8H9V7a3 3 0 0 1 6 0v3Zm-3 5a1.5 1.5 0 0 1 .75 2.8V19a.75.75 0 0 1-1.5 0v-1.2A1.5 1.5 0 0 1 12 15Z" />
+                    </svg>
+                  ) : (
+                    i + 1
+                  )}
                 </span>
                 <span className="min-w-0 flex-1">
                   <span
                     className={`block truncate font-body text-sm ${
-                      done ? 'text-bloodlight/90 line-through' : active ? 'text-gold' : 'text-parch'
+                      done ? 'text-bloodlight/90' : active ? 'text-gold' : 'text-parch'
                     }`}
                   >
                     {locked ? '? ? ?' : q.name}
