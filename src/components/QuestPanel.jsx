@@ -21,7 +21,7 @@ export default function QuestPanel({ quest, done, briefed, revealHeld, onBriefed
     ...quest.location,
     isArmor
       ? 'Собери всё это — и предстань предо мной достойным воином.'
-      : 'Ступай за клинком. А когда он будет в твоих руках — отметь это здесь.',
+      : 'Ступай за клинком. И возвращайся, когда сталь ляжет в твою ладонь.',
   ].filter(Boolean)
   const mapFromIndex = briefingLines.indexOf(LOC_HEADER)
 
