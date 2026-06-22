@@ -4,7 +4,7 @@
 export const samurai = {
   name: 'Мастер Кодзиро',
   title: 'Падший клинок Страны тростника',
-  portrait: '/images/samurai.png',
+  portrait: '/images/samurai.webp',
   // Вступительная речь при первом входе
   intro: [
     'А-ах... Опять ты бродишь среди мёртвых, погасшая душа.',
@@ -27,8 +27,8 @@ export const samurai = {
 
 export const finalReward = {
   name: 'Дар мастера Кодзиро',
-  image: '/images/reward-dragon.png',
-  mapImage: '/images/maps/reward-dragon.png',
+  image: '/images/reward-dragon.webp',
+  mapImage: '/images/maps/reward-dragon.webp',
   dialogue: [
     'Слушай же. На землях покоится спящий дракон — древний, обессиленный, но всё ещё дышащий.',
     'Он недвижим. Подойди без страха и обрушь на него кровотечение — рана за раной, пока алый поток не угасит его сердце.',
@@ -46,8 +46,8 @@ export const quests = [
     type: 'katana',
     name: 'Утигатана',
     nameEn: 'Uchigatana',
-    image: '/images/katanas/uchigatana.png',
-    mapImage: '/images/maps/uchigatana.png',
+    image: '/images/katanas/uchigatana.webp',
+    mapImage: '/images/maps/uchigatana.webp',
     lore: 'Катана с длинным клинком, заточенным с одной стороны. Уникальное оружие самураев из Страны тростника. Её лезвие с волнообразной линией закалки отличается необычайной остротой, а рубящие атаки вызывают кровотечение.',
     skill: {
       name: 'Обнажение клинка',
@@ -74,8 +74,8 @@ export const quests = [
     type: 'katana',
     name: 'Длинный клык',
     nameEn: 'Nagakiba',
-    image: '/images/katanas/nagakiba.png',
-    mapImage: '/images/maps/nagakiba.png',
+    image: '/images/katanas/nagakiba.webp',
+    mapImage: '/images/maps/nagakiba.webp',
     lore: 'Катана с устрашающе длинным лезвием. Оружие Юры, охотника на Окровавленных пальцев. Этот длинный клинок можно использовать как копьё, чтобы колоть врагов с безопасного расстояния.',
     skill: {
       name: 'Пронзающий клык',
@@ -105,8 +105,8 @@ export const quests = [
     type: 'armor',
     name: 'Комплект из Страны тростника',
     nameEn: 'Land of Reeds set',
-    image: '/images/armor/land-of-reeds.png',
-    mapImage: '/images/maps/land-of-reeds.png',
+    image: '/images/armor/land-of-reeds.webp',
+    mapImage: '/images/maps/land-of-reeds.webp',
     lore: 'Комплект принадлежал воину из Страны тростника. Долгая и тяжёлая гражданская война отделила эту державу от остального мира. В конце концов все её жители впали в кровавое безумие. По крайней мере, так гласит предание.',
     skill: null,
     parts: [
@@ -136,8 +136,8 @@ export const quests = [
     type: 'katana',
     name: 'Меч из метеоритной руды',
     nameEn: 'Meteoric Ore Blade',
-    image: '/images/katanas/meteoric-ore-blade.png',
-    mapImage: '/images/maps/meteoric-ore-blade.png',
+    image: '/images/katanas/meteoric-ore-blade.webp',
+    mapImage: '/images/maps/meteoric-ore-blade.webp',
     lore: 'Катана из метеоритной руды. Орудие убийства существ с падающих звёзд. Наносит магический урон. Говорят, по своей мощи атака этим оружием может сравниться разве что с ударом метеорита.',
     skill: {
       name: 'Гравитас',
@@ -164,8 +164,8 @@ export const quests = [
     type: 'katana',
     name: 'Лунная вуаль',
     nameEn: 'Moonveil',
-    image: '/images/katanas/moonveil.png',
-    mapImage: '/images/maps/moonveil.png',
+    image: '/images/katanas/moonveil.webp',
+    mapImage: '/images/maps/moonveil.webp',
     lore: 'Катана, выкованная из блестящего камня. Шедевр селлийских кузнецов. Когда меч вложен в ножны, его окутывает свет, отсюда и название — «Лунная вуаль».',
     skill: {
       name: 'Мимолётный свет луны',
@@ -192,8 +192,8 @@ export const quests = [
     type: 'katana',
     name: 'Меч из драконьей чешуи',
     nameEn: 'Dragonscale Blade',
-    image: '/images/katanas/dragonscale-blade.png',
-    mapImage: '/images/maps/dragonscale-blade.png',
+    image: '/images/katanas/dragonscale-blade.webp',
+    mapImage: '/images/maps/dragonscale-blade.webp',
     lore: 'Безупречный клинок из заострённой каменной чешуи, что якобы обеспечивала вечную жизнь древним драконам. Драконьи солдаты же, увы, бессмертия так и не познали и сгинули жалким подобием своих крылатых сородичей.',
     skill: {
       name: 'Ледяной меч молнии',

@@ -42,6 +42,7 @@ export default function SamuraiDialogue({
   const last = index >= lines.length - 1
   const full = lines[index] ?? ''
   const typing = shown.length < full.length
+  const mapVisible = mapImage && index >= mapFromIndex
 
   // Мгновенно дописать строку: ОБЯЗАТЕЛЬНО гасим таймер, иначе он снова
   // перезапишет текст куском и анимация «дёрнется».
@@ -96,7 +97,9 @@ export default function SamuraiDialogue({
           <div className="mb-2 font-body text-xs italic text-fog">{samurai.title}</div>
           {/* Призрак полной строки резервирует высоту — текст не скачет при печати */}
           <div
-            className={`relative h-[18rem] select-none font-body text-lg leading-relaxed ${
+            className={`relative ${
+              mapVisible ? 'min-h-[5rem]' : 'h-[18rem]'
+            } select-none font-body text-lg leading-relaxed ${
               typing ? 'cursor-pointer' : 'cursor-default'
             }`}
             onClick={() => {

@@ -34,11 +34,18 @@ export default {
           '0%': { backgroundPosition: '-200% 0' },
           '100%': { backgroundPosition: '200% 0' },
         },
+        // Вспышка золотого света при «проявлении» клинка из тьмы.
+        revealFlash: {
+          '0%': { opacity: 0, transform: 'scale(0.6)' },
+          '35%': { opacity: 1 },
+          '100%': { opacity: 0, transform: 'scale(1.6)' },
+        },
       },
       animation: {
         fadein: 'fadein 0.7s ease-out both',
         flicker: 'flicker 4s ease-in-out infinite',
         sheen: 'sheen 3.5s linear infinite',
+        revealFlash: 'revealFlash 1.6s ease-out both',
       },
     },
   },

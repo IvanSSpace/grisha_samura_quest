@@ -4,8 +4,11 @@ import ItemImage from './ItemImage'
 // Главная панель квеста.
 // Сначала самурай в диалоге зачитывает ВСЮ информацию по пунктам (брифинг),
 // затем открываются карточки, которые остаются на экране.
-export default function QuestPanel({ quest, done, briefed, onBriefed, onCollectClick }) {
+export default function QuestPanel({ quest, done, briefed, revealHeld, onBriefed, onCollectClick }) {
   const isArmor = quest.type === 'armor'
+  // Пока мастер зачитывает реакцию на сбор — держим клинок во тьме,
+  // чтобы проявление произошло на глазах игрока после закрытия диалога.
+  const revealed = done && !revealHeld
 
   // Реплики брифинга: завязка → (части комплекта) → местоположение по пунктам.
   // О навыке самурай не рассказывает — это смотрят в свитках позже.
@@ -48,12 +51,35 @@ export default function QuestPanel({ quest, done, briefed, onBriefed, onCollectC
       {/* Заголовок предмета */}
       <header className="frame overflow-hidden">
         <div className="flex flex-col gap-5 p-5 md:flex-row md:p-6">
-          <ItemImage
-            src={quest.image}
-            alt={quest.name}
-            kind={isArmor ? 'комплект' : 'катана'}
-            className="h-40 w-full rounded object-contain md:h-44 md:w-44"
-          />
+          {/* Клинок скрыт во тьме, пока не собран; при сборе — проявляется из затемнения. */}
+          <div className="relative h-40 w-full shrink-0 overflow-hidden rounded md:h-44 md:w-44">
+            <ItemImage
+              src={quest.image}
+              alt={quest.name}
+              kind={isArmor ? 'комплект' : 'катана'}
+              className={`h-full w-full object-contain transition-all duration-[1600ms] ease-out ${
+                revealed
+                  ? 'scale-100 blur-0 brightness-100 grayscale-0'
+                  : 'scale-105 blur-[5px] brightness-[0.18] grayscale'
+              }`}
+            />
+            {/* Тёмная пелена поверх скрытого клинка */}
+            <div
+              className={`pointer-events-none absolute inset-0 bg-gradient-to-t from-black via-black/75 to-black/45 transition-opacity duration-[1600ms] ${
+                done ? 'opacity-0' : 'opacity-100'
+              }`}
+            />
+            {/* Печать на запечатанном клинке */}
+            {!done && (
+              <span className="pointer-events-none absolute inset-0 flex items-center justify-center font-title text-5xl text-ember/25">
+                封
+              </span>
+            )}
+            {/* Вспышка золотого света в момент проявления */}
+            {done && (
+              <span className="pointer-events-none absolute inset-0 animate-revealFlash rounded bg-[radial-gradient(circle,rgba(217,192,137,0.55),transparent_65%)]" />
+            )}
+          </div>
           <div className="flex-1">
             <div className="flex items-center gap-2 font-title text-xs tracking-[0.3em] text-ember/80">
               {isArmor ? 'ОБЛАЧЕНИЕ' : 'КАТАНА'}
