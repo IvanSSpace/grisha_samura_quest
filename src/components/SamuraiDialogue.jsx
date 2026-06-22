@@ -96,9 +96,7 @@ export default function SamuraiDialogue({
           <div className="mb-2 font-body text-xs italic text-fog">{samurai.title}</div>
           {/* Призрак полной строки резервирует высоту — текст не скачет при печати */}
           <div
-            className={`relative ${
-              mapImage ? 'h-[11rem]' : 'h-[14rem]'
-            } overflow-hidden select-none font-body text-lg leading-relaxed ${
+            className={`relative h-[12rem] overflow-hidden select-none font-body text-lg leading-relaxed ${
               typing ? 'cursor-pointer' : 'cursor-default'
             }`}
             onClick={() => {
@@ -117,11 +115,11 @@ export default function SamuraiDialogue({
         </div>
       </div>
 
-      {/* Слот под карту зарезервирован всегда — окно не меняет размер */}
-      {mapImage && (
-        <div className="mt-4 h-[15rem]">
-          {index >= mapFromIndex && (
-            <div className="flex h-full flex-col animate-fadein">
+      {/* Слот под карту зарезервирован ВСЕГДА — даже без карты,
+          чтобы все окна диалога были одного размера */}
+      <div className="mt-4 h-[15rem]">
+        {mapImage && index >= mapFromIndex && (
+          <div className="flex h-full flex-col animate-fadein">
               <div className="mb-1 font-title text-xs tracking-widest text-ember/80">
                 ◆ МЕТКА НА КАРТЕ
               </div>
@@ -134,7 +132,6 @@ export default function SamuraiDialogue({
             </div>
           )}
         </div>
-      )}
 
       <div className="mt-3 flex items-center justify-between">
         <div className="flex gap-1.5">
