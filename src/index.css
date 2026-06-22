@@ -15,12 +15,24 @@ body,
 body {
   margin: 0;
   background-color: #0a0907;
-  background-image:
-    radial-gradient(1200px 600px at 50% -10%, rgba(201, 162, 39, 0.08), transparent 60%),
-    radial-gradient(900px 500px at 50% 120%, rgba(122, 31, 31, 0.12), transparent 60%),
-    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160' viewBox='0 0 160 160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");
   color: #cbb994;
   font-family: 'EB Garamond', Georgia, serif;
+}
+
+/* Затемнённый фон-пейзаж Эрдтри, фиксированный за контентом */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  background-image:
+    linear-gradient(180deg, rgba(10, 9, 7, 0.78) 0%, rgba(10, 9, 7, 0.86) 55%, rgba(10, 9, 7, 0.95) 100%),
+    radial-gradient(1200px 600px at 50% -10%, rgba(201, 162, 39, 0.1), transparent 60%),
+    url('/images/bg.png');
+  background-size: cover, cover, cover;
+  background-position: center top;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
 }
 
 /* Прокрутка в стиле тёмного фэнтези */
