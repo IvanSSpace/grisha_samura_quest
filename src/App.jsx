@@ -183,6 +183,7 @@ export default function App() {
       <ConfirmModal
         open={modalOpen}
         questName={quests[activeIndex]?.name}
+        isArmor={quests[activeIndex]?.type === 'armor'}
         onConfirm={handleConfirm}
         onCancel={() => setModalOpen(false)}
       />

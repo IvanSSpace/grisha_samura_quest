@@ -49,7 +49,7 @@ body::before {
 
 @layer components {
   .frame {
-    @apply relative rounded-md border border-ember/30 bg-ash/80 backdrop-blur-sm;
+    @apply relative rounded-md border border-ember/30 bg-ash/80 backdrop-blur-[2px];
     box-shadow: inset 0 0 40px rgba(0, 0, 0, 0.6), 0 8px 30px rgba(0, 0, 0, 0.5);
   }
   .frame::before {

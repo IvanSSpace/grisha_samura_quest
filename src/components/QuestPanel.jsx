@@ -145,11 +145,13 @@ export default function QuestPanel({ quest, done, briefed, revealHeld, onBriefed
                 onClick={onCollectClick}
                 className="group relative overflow-hidden rounded border border-ember/50 bg-ash px-8 py-4 font-title text-lg tracking-wide text-gold transition hover:shadow-glow"
               >
-                <span className="relative z-10">⟡ Я забрал этот клинок</span>
+                <span className="relative z-10">
+                  {isArmor ? '⟡ Я собрал это облачение' : '⟡ Я забрал этот клинок'}
+                </span>
                 <span className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-ember/15 to-transparent transition-transform duration-700 group-hover:translate-x-full" />
               </button>
               <p className="font-body text-xs italic text-fog">
-                Следующий квест откроется лишь когда клинок будет у тебя.
+                Следующий квест откроется лишь когда {isArmor ? 'облачение' : 'клинок'} будет у тебя.
               </p>
             </div>
           )}

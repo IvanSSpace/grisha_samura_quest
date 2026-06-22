@@ -2,7 +2,9 @@ import { useEffect, useState } from 'react'
 
 // Защита от случайного клика: чтобы отметить клинок собранным,
 // нужно осознанно подтвердить (две ступени) — мисклик не сработает.
-export default function ConfirmModal({ open, questName, onConfirm, onCancel }) {
+export default function ConfirmModal({ open, questName, isArmor, onConfirm, onCancel }) {
+  const noun = isArmor ? 'облачение' : 'клинок'
+  const nounSobr = isArmor ? 'облачение собранным' : 'клинок собранным'
   const [armed, setArmed] = useState(false)
 
   useEffect(() => {
@@ -25,7 +27,7 @@ export default function ConfirmModal({ open, questName, onConfirm, onCancel }) {
         <p className="font-body text-parch/90 leading-relaxed">
           Ты держишь в руках <span className="text-gold">«{questName}»</span>?
           <br />
-          Отметить клинок собранным можно лишь однажды — назад пути не будет.
+          Отметить {nounSobr} можно лишь однажды — назад пути не будет.
         </p>
 
         {!armed ? (
@@ -33,7 +35,7 @@ export default function ConfirmModal({ open, questName, onConfirm, onCancel }) {
             onClick={() => setArmed(true)}
             className="mt-6 w-full rounded border border-ember/40 bg-ash px-4 py-3 font-title tracking-wide text-gold transition hover:bg-ember/10 hover:shadow-glow"
           >
-            Да, клинок у меня
+            Да, {noun} у меня
           </button>
         ) : (
           <div className="mt-6 animate-fadein">
