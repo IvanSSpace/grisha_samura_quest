@@ -63,7 +63,14 @@ export default function SamuraiDialogue({
   }
 
   return (
-    <div className={`frame ${compact ? 'p-4' : 'p-5 md:p-6'} animate-fadein`}>
+    <div
+      className={`frame ${compact ? 'p-4' : 'p-5 md:p-6'} animate-fadein ${
+        typing ? 'cursor-pointer' : ''
+      }`}
+      onClick={() => {
+        if (typing) completeLine() // клик по любому месту окна допечатывает текст
+      }}
+    >
       <div className="flex items-start gap-4">
         <div className="shrink-0">
           <div className="relative h-16 w-16 md:h-20 md:w-20 overflow-hidden rounded-full border border-ember/40 shadow-glow">
