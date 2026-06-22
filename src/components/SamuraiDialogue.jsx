@@ -1,8 +1,18 @@
 import { useEffect, useRef, useState } from 'react'
 import { samurai } from '../data/quests'
+import ItemImage from './ItemImage'
 
 // Диалоговое окно в духе Elden Ring: портрет + построчная подача реплик.
-export default function SamuraiDialogue({ lines, onDone, compact = false }) {
+// mapImage + mapFromIndex — карта проявляется прямо в окне, когда самурай
+// доходит до рассказа о местоположении.
+export default function SamuraiDialogue({
+  lines,
+  onDone,
+  compact = false,
+  mapImage,
+  mapAlt,
+  mapFromIndex = Infinity,
+}) {
   const [index, setIndex] = useState(0)
   const [shown, setShown] = useState('')
   const lineRef = useRef(lines)
@@ -70,7 +80,7 @@ export default function SamuraiDialogue({ lines, onDone, compact = false }) {
           <div className="mb-2 font-body text-xs italic text-fog">{samurai.title}</div>
           {/* Призрак полной строки резервирует высоту — текст не скачет при печати */}
           <div
-            className="relative min-h-[6rem] cursor-pointer select-none font-body text-lg leading-relaxed"
+            className={`relative ${compact ? 'h-[13rem]' : 'h-[12rem]'} overflow-y-auto cursor-pointer select-none font-body text-lg leading-relaxed`}
             onClick={advance}
           >
             <p className="invisible" aria-hidden="true">
@@ -85,6 +95,20 @@ export default function SamuraiDialogue({ lines, onDone, compact = false }) {
         </div>
       </div>
 
+      {mapImage && index >= mapFromIndex && (
+        <div className="mt-4 animate-fadein">
+          <div className="mb-1 font-title text-xs tracking-widest text-ember/80">
+            ◆ МЕТКА НА КАРТЕ
+          </div>
+          <ItemImage
+            src={mapImage}
+            alt={mapAlt || 'Карта'}
+            kind="метка на карте"
+            className="h-56 w-full rounded border border-ember/20 object-cover md:h-72"
+          />
+        </div>
+      )}
+
       <div className="mt-3 flex items-center justify-between">
         <div className="flex gap-1.5">
           {lines.map((_, i) => (
@@ -97,10 +121,16 @@ export default function SamuraiDialogue({ lines, onDone, compact = false }) {
           ))}
         </div>
         <button
-          onClick={advance}
-          className="rounded border border-ember/30 px-4 py-1.5 font-title text-sm tracking-wide text-gold transition hover:bg-ember/10"
+          onClick={() => {
+            if (typing) return // кнопка неактивна, пока строка не допечаталась
+            advance()
+          }}
+          aria-disabled={typing}
+          className={`rounded border border-ember/30 px-4 py-1.5 font-title text-sm tracking-wide text-gold transition hover:bg-ember/10 ${
+            typing ? 'cursor-default' : ''
+          }`}
         >
-          {typing ? 'Дальше ▸' : last ? 'Принять ◆' : 'Дальше ▸'}
+          {last ? 'Принять ◆' : 'Дальше ▸'}
         </button>
       </div>
     </div>

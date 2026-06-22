@@ -68,6 +68,19 @@ export default function App() {
   const viewedQuest = viewIndex < quests.length ? quests[viewIndex] : null
   const viewedDone = viewedQuest ? isCollected(viewedQuest.id) : false
 
+  // Брифинг-оверлей активен, пока текущий квест не отбрифован
+  const briefingOpen =
+    !allDone && viewedQuest && !(viewedDone || isBriefed(viewedQuest.id))
+
+  // Блокируем прокрутку фона, когда открыт любой модальный оверлей
+  const anyOverlay = showIntro || !!justCollected || modalOpen || briefingOpen
+  useEffect(() => {
+    document.body.style.overflow = anyOverlay ? 'hidden' : ''
+    return () => {
+      document.body.style.overflow = ''
+    }
+  }, [anyOverlay])
+
   return (
     <div className="min-h-screen">
       {/* Шапка */}
@@ -132,7 +145,7 @@ export default function App() {
 
       {/* Вступление */}
       {showIntro && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/85 p-4">
+        <div className="fixed inset-0 z-50 flex items-center justify-center overflow-y-auto bg-black/85 p-4">
           <div className="w-full max-w-2xl">
             <SamuraiDialogue lines={samurai.intro} onDone={dismissIntro} />
           </div>
@@ -141,7 +154,7 @@ export default function App() {
 
       {/* Реакция мастера на собранный клинок */}
       {justCollected && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/85 p-4">
+        <div className="fixed inset-0 z-50 flex items-center justify-center overflow-y-auto bg-black/85 p-4">
           <div className="w-full max-w-2xl">
             <SamuraiDialogue
               lines={justCollected.completeDialogue}

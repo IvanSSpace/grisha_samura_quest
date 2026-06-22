@@ -7,23 +7,45 @@ import ItemImage from './ItemImage'
 export default function QuestPanel({ quest, done, briefed, onBriefed, onCollectClick }) {
   const isArmor = quest.type === 'armor'
 
-  // Реплики брифинга: завязка → лор → навык/части → местоположение по пунктам.
+  // Реплики брифинга: завязка → (части комплекта) → местоположение по пунктам.
+  // О навыке самурай не рассказывает — это смотрят в свитках позже.
+  const LOC_HEADER = 'Теперь запомни, где искать. Слушай внимательно:'
   const briefingLines = [
     ...quest.giverDialogue,
-    isArmor
-      ? `Облачение собирается из частей: ${quest.parts.join(', ')}.`
-      : `Навык клинка — «${quest.skill.name}». ${quest.skill.text}`,
+    isArmor ? `Облачение собирается из частей: ${quest.parts.join(', ')}.` : null,
     quest.note ? quest.note : null,
-    'Теперь запомни, где искать. Слушай внимательно:',
+    LOC_HEADER,
     ...quest.location,
     isArmor
       ? 'Собери всё это — и предстань предо мной достойным воином.'
       : 'Ступай за клинком. А когда он будет в твоих руках — отметь это здесь.',
   ].filter(Boolean)
+  const mapFromIndex = briefingLines.indexOf(LOC_HEADER)
 
+  // ЭТАП 1 — брифинг в том же модальном окне, что и вступление.
+  if (!briefed) {
+    return (
+      <div className="fixed inset-0 z-40 flex items-center justify-center overflow-y-auto bg-black/85 p-4">
+        <div className="w-full max-w-2xl">
+          <SamuraiDialogue
+            lines={briefingLines}
+            onDone={onBriefed}
+            mapImage={quest.mapImage}
+            mapAlt={`Карта · ${quest.name}`}
+            mapFromIndex={mapFromIndex}
+          />
+          <p className="mt-3 text-center font-body text-xs italic text-fog">
+            Выслушай мастера до конца — затем перед тобой раскроются свитки с подробностями.
+          </p>
+        </div>
+      </div>
+    )
+  }
+
+  // ЭТАП 2 — карточки со всей информацией остаются на экране.
   return (
     <article className="animate-fadein space-y-6">
-      {/* Заголовок предмета — виден всегда */}
+      {/* Заголовок предмета */}
       <header className="frame overflow-hidden">
         <div className="flex flex-col gap-5 p-5 md:flex-row md:p-6">
           <ItemImage
@@ -43,27 +65,14 @@ export default function QuestPanel({ quest, done, briefed, onBriefed, onCollectC
             </div>
             <h1 className="mt-1 font-title text-3xl gold-text md:text-4xl">{quest.name}</h1>
             <p className="font-body text-sm italic text-fog">{quest.nameEn}</p>
-            {briefed && (
-              <>
-                <div className="divider my-4" />
-                <p className="font-body text-base leading-relaxed text-parch/90">{quest.lore}</p>
-              </>
-            )}
+            <div className="divider my-4" />
+            <p className="font-body text-base leading-relaxed text-parch/90">{quest.lore}</p>
           </div>
         </div>
       </header>
 
-      {/* ЭТАП 1 — брифинг: самурай рассказывает всё по пунктам */}
-      {!briefed ? (
-        <>
-          <SamuraiDialogue lines={briefingLines} onDone={onBriefed} />
-          <p className="text-center font-body text-xs italic text-fog">
-            Выслушай мастера до конца — затем перед тобой раскроются свитки с подробностями.
-          </p>
-        </>
-      ) : (
-        /* ЭТАП 2 — карточки со всей информацией остаются на экране */
-        <>
+      {/* Свитки со всей информацией */}
+      <>
           <div className="grid gap-6 md:grid-cols-2">
             {/* Навык / части комплекта */}
             <section className="frame p-5">
@@ -134,7 +143,6 @@ export default function QuestPanel({ quest, done, briefed, onBriefed, onCollectC
             </div>
           )}
         </>
-      )}
     </article>
   )
 }
