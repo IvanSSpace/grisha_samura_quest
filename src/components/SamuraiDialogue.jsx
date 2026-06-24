@@ -12,6 +12,12 @@ export default function SamuraiDialogue({
   mapImage,
   mapAlt,
   mapFromIndex = Infinity,
+  // reserve: держать фиксированную высоту (текст + слот карты), чтобы все
+  // окна в одном потоке были одного размера и не «прыгали» при переходе.
+  // Для отдельных окон без карты (финальный дар) выключаем — окно по тексту.
+  reserve = true,
+  // bare: без собственной рамки/паддинга — когда диалог вложен в другой блок.
+  bare = false,
 }) {
   const [index, setIndex] = useState(0)
   const [shown, setShown] = useState('')
@@ -64,7 +70,7 @@ export default function SamuraiDialogue({
 
   return (
     <div
-      className={`frame ${compact ? 'p-4' : 'p-5 md:p-6'} animate-fadein ${
+      className={`${bare ? '' : `frame ${compact ? 'p-4' : 'p-5 md:p-6'} animate-fadein`} ${
         typing ? 'cursor-pointer' : ''
       }`}
       onClick={() => {
@@ -83,9 +89,6 @@ export default function SamuraiDialogue({
                 e.currentTarget.parentElement.classList.add('bg-ash')
               }}
             />
-            <div className="pointer-events-none absolute inset-0 flex items-center justify-center font-title text-2xl text-ember/30">
-              侍
-            </div>
           </div>
         </div>
 
@@ -96,9 +99,9 @@ export default function SamuraiDialogue({
           <div className="mb-2 font-body text-xs italic text-fog">{samurai.title}</div>
           {/* Призрак полной строки резервирует высоту — текст не скачет при печати */}
           <div
-            className={`relative h-[12rem] overflow-hidden select-none font-body text-lg leading-relaxed ${
-              typing ? 'cursor-pointer' : 'cursor-default'
-            }`}
+            className={`relative overflow-hidden select-none font-body text-lg leading-relaxed ${
+              reserve ? 'h-[12rem]' : ''
+            } ${typing ? 'cursor-pointer' : 'cursor-default'}`}
             onClick={() => {
               if (typing) completeLine() // клик по тексту только дописывает строку
             }}
@@ -115,10 +118,11 @@ export default function SamuraiDialogue({
         </div>
       </div>
 
-      {/* Слот под карту зарезервирован ВСЕГДА — даже без карты,
-          чтобы все окна диалога были одного размера */}
-      <div className="mt-4 h-[15rem]">
-        {mapImage && index >= mapFromIndex && (
+      {/* Слот под карту резервируем при reserve — даже без карты, чтобы окна
+          одного потока были одного размера и не «прыгали» при переходе. */}
+      {reserve && (
+        <div className="mt-4 h-[15rem]">
+          {mapImage && index >= mapFromIndex && (
           <div className="flex h-full flex-col animate-fadein">
               <div className="mb-1 font-title text-xs tracking-widest text-ember/80">
                 ◆ МЕТКА НА КАРТЕ
@@ -132,6 +136,7 @@ export default function SamuraiDialogue({
             </div>
           )}
         </div>
+      )}
 
       <div className="mt-3 flex items-center justify-between">
         <div className="flex gap-1.5">
