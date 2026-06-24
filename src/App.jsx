@@ -16,8 +16,7 @@ export default function App() {
 
   const [showIntro, setShowIntro] = useState(() => !localStorage.getItem(INTRO_KEY))
   const [modalOpen, setModalOpen] = useState(false)
-  const [revealQuest, setRevealQuest] = useState(null) // quest для всплывающего окна проявления
-  const [justCollected, setJustCollected] = useState(null) // quest, чью реакцию показываем
+  const [revealQuest, setRevealQuest] = useState(null) // quest для окна сбора (проявление + реакция)
   const [selected, setSelected] = useState(null) // ручной выбор в тропе
 
   // Какие квесты уже «отбрифованы» — самурай рассказал о них в диалоге.
@@ -75,7 +74,7 @@ export default function App() {
     !allDone && viewedQuest && !(viewedDone || isBriefed(viewedQuest.id))
 
   // Блокируем прокрутку фона, когда открыт любой модальный оверлей
-  const anyOverlay = showIntro || !!revealQuest || !!justCollected || modalOpen || briefingOpen
+  const anyOverlay = showIntro || !!revealQuest || modalOpen || briefingOpen
   useEffect(() => {
     document.body.style.overflow = anyOverlay ? 'hidden' : ''
     return () => {
@@ -93,7 +92,7 @@ export default function App() {
               Путь клинка
             </h1>
             <p className="font-body text-xs italic text-fog">
-              Квест мастера Кодзиро · клинки Страны тростника
+              Квест мастера Konichuiri · клинки Страны тростника
             </p>
           </div>
           <button
@@ -122,22 +121,25 @@ export default function App() {
             activeIndex={activeIndex}
             isCollected={isCollected}
             onSelect={(i) => setSelected(i)}
+            allDone={allDone}
+            finalActive={allDone && viewedQuest == null}
+            onSelectFinal={() => setSelected(quests.length)}
           />
         </aside>
 
         <section className="min-w-0">
-          {allDone ? (
-            <FinalReward />
-          ) : (
+          {viewedQuest ? (
             <QuestPanel
               key={viewedQuest.id}
               quest={viewedQuest}
               done={viewedDone}
               briefed={viewedDone || isBriefed(viewedQuest.id)}
-              revealHeld={revealQuest?.id === viewedQuest.id || justCollected?.id === viewedQuest.id}
+              revealHeld={revealQuest?.id === viewedQuest.id}
               onBriefed={() => markBriefed(viewedQuest.id)}
               onCollectClick={() => setModalOpen(true)}
             />
+          ) : (
+            <FinalReward />
           )}
         </section>
       </main>
@@ -155,28 +157,9 @@ export default function App() {
         </div>
       )}
 
-      {/* Всплывающее окно: клинок проявляется из тьмы */}
+      {/* Одно окно сбора: проявление клинка + реакция мастера */}
       {revealQuest && (
-        <CollectReveal
-          quest={revealQuest}
-          onDone={() => {
-            const q = revealQuest
-            setRevealQuest(null)
-            setJustCollected(q) // затем реакция мастера
-          }}
-        />
-      )}
-
-      {/* Реакция мастера на собранный клинок */}
-      {justCollected && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center overflow-y-auto bg-black/85 p-4">
-          <div className="w-full max-w-2xl">
-            <SamuraiDialogue
-              lines={justCollected.completeDialogue}
-              onDone={() => setJustCollected(null)}
-            />
-          </div>
-        </div>
+        <CollectReveal quest={revealQuest} onDone={() => setRevealQuest(null)} />
       )}
 
       {/* Подтверждение сбора (защита от мисклика) */}
